@@ -16,6 +16,7 @@ import uuid
 import sys
 import re
 import collections
+from typing import Tuple
 
 from anytree import (Resolver, ChildResolverError, LevelOrderIter)
 import deprecation
@@ -89,6 +90,11 @@ class SignalUUID_DB:
         self.db = {}
 
 
+def read_file(full_path) -> Tuple[str, str]:
+    with open(full_path, "r") as fp:
+        text = fp.read()
+    return os.path.dirname(full_path), text
+
 
 # Try to open a file name that can reside
 # in any directory listed in incude_paths.
@@ -97,20 +103,17 @@ class SignalUUID_DB:
 def search_and_read(file_name, include_paths):
     # If absolute path, then ignore include paths
     if file_name[0] == '/':
-        with open(file_name, "r") as fp:
-            text = fp.read()
-            fp.close()
-            return os.path.dirname(file_name), text
-
-    for directory in include_paths:
         try:
-            path = "{}/{}".format(directory, file_name)
-            with open(path, "r") as fp:
-                text = fp.read()
-                fp.close()
-                return os.path.dirname(path), text
-        except IOError as e:
+            return read_file(file_name)
+        except FileNotFoundError:
             pass
+    else:
+        for directory in include_paths:
+            path = os.path.join(directory, file_name)
+            try:
+                return read_file(path)
+            except FileNotFoundError:
+                pass
 
     # We failed, raise last exception we ran into.
     raise VSpecError(file_name, 0, "File error")
