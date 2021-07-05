@@ -75,9 +75,11 @@ class Unit(Enum, metaclass=EnumMetaWithReverseLookup):
     VOLT = "V"
     AMPERE = "A"
     SECOND = "s"
+    MILLISECOND = "ms"
     MINUTE = "min"
     WEEKS = "weeks"
     MONTHS = "months"
+    YEARS = "years"
     UNIXTIMESTAMP = "UNIX Timestamp"
     PASCAL = "Pa"
     KILOPASCAL = "kPa"
@@ -96,6 +98,9 @@ class Unit(Enum, metaclass=EnumMetaWithReverseLookup):
     REVOLUTIONSPERMINUTE = "rpm"
     INCH = "inch"
     RATIO = "ratio"
+    HERTZ = "Hz"
+    LUX = "lx"
+    MILLIBAR = "mbar"
 
 
 class VSSType(Enum, metaclass=EnumMetaWithReverseLookup):
